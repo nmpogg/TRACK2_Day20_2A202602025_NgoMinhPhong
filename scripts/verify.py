@@ -184,7 +184,7 @@ def check_reflection(r: Report) -> None:
     if not path.exists():
         r.fail("Reflection: submission/REFLECTION.md is missing")
         return
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     end = REQUIRED_END.search(text)
     required = text[: end.start()] if end else text
     hits = [

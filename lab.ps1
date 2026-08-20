@@ -1,4 +1,4 @@
-<#
+﻿<#
   Windows runner — the equivalent of `make <target>` for students without make.
 
   Works in Windows PowerShell 5.1 (powershell.exe) and PowerShell 7+ (pwsh).
@@ -28,7 +28,7 @@ $SysPy  = 'python'
 
 function Need-Venv {
     if (-not (Test-Path $VenvPy)) {
-        Write-Host "ERROR: no virtualenv found at .venv\" -ForegroundColor Red
+        Write-Host 'ERROR: no virtualenv found at .venv\' -ForegroundColor Red
         Write-Host "Run this first:  .\lab.ps1 setup"
         exit 1
     }
@@ -46,7 +46,7 @@ switch ($Target) {
     'help' {
         Write-Host ""
         Write-Host "Day 20 lab — Windows runner" -ForegroundColor Cyan
-        Write-Host "Usage:  .\lab.ps1 <target>"
+        Write-Host 'Usage:  .\lab.ps1 target'
         Write-Host ""
         Write-Host "Setup (00)"
         Write-Host "  probe          Probe hardware -> hardware.json"
@@ -134,7 +134,7 @@ switch ($Target) {
         cmake -B bonus\llama.cpp\build -S bonus\llama.cpp @flags -DGGML_NATIVE=ON -DCMAKE_BUILD_TYPE=Release
         cmake --build bonus\llama.cpp\build -j --config Release
         Write-Host ""
-        Write-Host "Built. Now compare it against the prebuilt binary:  .\lab.ps1 compare-builds"
+        Write-Host 'Built. Now compare it against the prebuilt binary:  .\lab.ps1 compare-builds'
     }
 
     'clean' {
@@ -142,7 +142,7 @@ switch ($Target) {
             benchmarks\02-*.md, benchmarks\02-*.json, benchmarks\02-*.csv,
             benchmarks\03-*.md, benchmarks\03-*.json,
             benchmarks\locust-*.csv, benchmarks\bonus-*.md, benchmarks\bonus-*.json
-        Write-Host "Cleaned generated reports. Kept hardware.json, models\, runtime\, submission\."
+        Write-Host 'Cleaned generated reports. Kept hardware.json, models\, runtime\, submission\.'
     }
 
     'clean-all' {
@@ -152,12 +152,12 @@ switch ($Target) {
             benchmarks\locust-*.csv, benchmarks\bonus-*.md, benchmarks\bonus-*.json
         Remove-Item -Recurse -Force -ErrorAction SilentlyContinue .venv, runtime, models,
             bonus\llama.cpp, hardware.json
-        Write-Host "Removed venv, runtime, models and hardware.json. Re-run: .\lab.ps1 setup"
+        Write-Host 'Removed venv, runtime, models and hardware.json. Re-run: .\lab.ps1 setup'
     }
 
     default {
-        Write-Host "Unknown target: $Target" -ForegroundColor Red
-        Write-Host "Run  .\lab.ps1  with no arguments to list targets."
+        Write-Host ('Unknown target: ' + $Target) -ForegroundColor Red
+        Write-Host 'Run  .\lab.ps1  with no arguments to list targets.'
         exit 1
     }
 }
