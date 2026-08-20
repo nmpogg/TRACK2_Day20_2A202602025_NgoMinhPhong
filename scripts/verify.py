@@ -16,6 +16,9 @@ import re
 import subprocess
 import sys
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1] / "lib"))
 import labkit  # noqa: E402
 
@@ -60,7 +63,11 @@ def tracked_files() -> set[str] | None:
         return None
     if out.returncode != 0:
         return None
-    return {line.strip() for line in out.stdout.splitlines() if line.strip()}
+    return {
+        line.strip().replace("\\", "/")
+        for line in out.stdout.splitlines()
+        if line.strip()
+    }
 
 
 TRACKED = None  # populated in main()
@@ -71,7 +78,7 @@ def is_committed(path: pathlib.Path) -> bool | None:
     if TRACKED is None:
         return None
     try:
-        rel = str(path.resolve().relative_to(labkit.repo_root()))
+        rel = str(path.resolve().relative_to(labkit.repo_root())).replace("\\", "/")
     except ValueError:
         return None
     return rel in TRACKED
